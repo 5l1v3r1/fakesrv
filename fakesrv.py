@@ -6,24 +6,38 @@ import socket
 import signal
 
 def handleUDP(cs, MSG):
-    (data, addr) = cs.recvfrom(1024)
-    print("%s\n" % data)
-    cs.sendto("%s\n" % MSG, addr)
+    data, addr = cs.recvfrom(1024)
+    print("Connection from {0:s}".format(addr[0]))
+    print("{0:s}: {1:s}".format(addr[0], data.rstrip('\n')))
+    cs.sendto("{0:s}\n".format(MSG), addr)
 
 def handleTCP(cs, addr, MSG):
-    print("Connection from: %s", addr)
-    data = cs.recv(1024)
-    print("%s\n" % data)
-    cs.sendall("%s\n" % MSG)
+    print("Connection from: {0:s}".format(addr[0]))
+    try:
+        data = cs.recv(1024)
+        print("{0:s}: {1:s}".format(addr[0], data.rstrip('\n')))
+        cs.sendall("{0:s}\n".format(MSG))
+        cs.close()
+    except:
+        print("Some error, killing connection")
+        cs.close()
 
 def main():
     if len(sys.argv) != 4:
-        print('Usage: %s PORT MSG PROTO' % sys.argv[0])
+        print("Usage: {0:s} PROTO PORT FILE/MSG".format(sys.argv[0]))
         sys.exit(1)
 
     PROTO = sys.argv[1]
     PORT = int(sys.argv[2])
-    MSG = sys.argv[3]
+    FILE = sys.argv[3]
+    MSG = ""
+
+    try:
+        with open(FILE, "r") as f:
+            MSG = f.read()
+    except:
+        print("File {0:s} does not exist. Using input as message to send.".format(FILE))
+        MSG = FILE
 
     signal.signal(signal.SIGCHLD, signal.SIG_IGN)
 
