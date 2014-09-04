@@ -29,30 +29,26 @@ def main():
 
     if PROTO.upper() == 'TCP':
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    elif PROTO.upper() == 'UDP':
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    else:
-        print('PROTO is either TCP or UDP')
-        sys.exit(1)
-
-    s.bind(('0.0.0.0', PORT))
-
-    if PROTO.upper() == 'TCP':
+        s.bind(('0.0.0.0', PORT))
         s.listen(100)
         while 1:
             (cs, addr) = s.accept()
             pid = os.fork()
-
             if pid == 0:
                 s.close()
                 handleTCP(cs, addr, MSG)
                 sys.exit(0)
-
             cs.close()
 
-    if PROTO.upper() == 'UDP':
+    elif PROTO.upper() == 'UDP':
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.bind(('0.0.0.0', PORT))
         while 1:
             handleUDP(s, MSG)
+
+    else:
+        print('PROTO is either TCP or UDP')
+        sys.exit(1)
     return 0
 
 if __name__ == '__main__':
