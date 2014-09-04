@@ -38,7 +38,7 @@ def main():
         with open(FILE, "r") as f:
             MSG = f.read()
     except:
-        print("File {0:s} does not exist. Using input as message to send.".format(FILE))
+        print("File \"{0:s}\" does not exist. Using input as message to send.".format(FILE))
         MSG = FILE
 
     signal.signal(signal.SIGCHLD, signal.SIG_IGN)
