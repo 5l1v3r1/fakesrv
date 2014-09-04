@@ -13,7 +13,7 @@ def handleUDP(cs, MSG):
         cs.sendto("{0:s}".format(MSG), addr)
 
 def handleTCP(cs, addr, MSG):
-print("Connection from: {0:s}:{1:s}".format(addr[0], addr[1]))
+    print("Connection from: {0:s}:{1:s}".format(addr[0], addr[1]))
     try:
         data = cs.recv(1024)
         print("{0:s}:{1:s}: {2:s}".format(addr[0], addr[1], data.rstrip('\n')))
