@@ -7,7 +7,6 @@ import signal
 
 def handleUDP(cs, MSG):
     data, addr = cs.recvfrom(1024)
-    print("Connection from {0:s}:{1:d}".format(addr[0], addr[1]))
     print("{0:s}:{1:d}: {2:s}".format(addr[0], addr[1], data.rstrip('\n')))
     if MSG:
         cs.sendto("{0:s}".format(MSG), addr)
