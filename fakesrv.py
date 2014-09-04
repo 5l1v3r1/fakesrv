@@ -9,14 +9,14 @@ def handleUDP(cs, MSG):
     data, addr = cs.recvfrom(1024)
     print("Connection from {0:s}".format(addr[0]))
     print("{0:s}: {1:s}".format(addr[0], data.rstrip('\n')))
-    cs.sendto("{0:s}\n".format(MSG), addr)
+    cs.sendto("{0:s}".format(MSG), addr)
 
 def handleTCP(cs, addr, MSG):
     print("Connection from: {0:s}".format(addr[0]))
     try:
         data = cs.recv(1024)
         print("{0:s}: {1:s}".format(addr[0], data.rstrip('\n')))
-        cs.sendall("{0:s}\n".format(MSG))
+        cs.sendall("{0:s}".format(MSG))
         cs.close()
     except:
         print("Some error, killing connection")
