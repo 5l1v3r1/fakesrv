@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import sys
 import socket
@@ -16,7 +18,7 @@ def handleTCP(cs, addr, MSG):
 
 def main():
     if len(sys.argv) != 4:
-        print('Usage: %s PORT MSG PROTO', sys.argv[0])
+        print('Usage: %s PORT MSG PROTO' % sys.argv[0])
         sys.exit(1)
 
     PROTO = sys.argv[1]
