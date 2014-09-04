@@ -1,6 +1,6 @@
 fakesrv.py
 ==========
-Fake Services with ease.
+Fake services with ease.
 
 Usage ./fakesrv.py {PROTOCOL} {PORT} {FILE OR MESSAGE}
 
@@ -18,6 +18,8 @@ GET / HTTP/1.1
 have fun inside
 #
 </pre>
+
+It's really easy. You can use a file instead of a message. The script just checks if the {MESSAGE OR FILE} argument exists as a file and if not then it just prints as a message.
 
 TODO:
 Line by line file reading<br>
