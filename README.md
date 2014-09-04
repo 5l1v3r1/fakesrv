@@ -21,6 +21,7 @@ have fun inside
 
 It's really easy. You can use a file instead of a message. The script just checks if the {MESSAGE OR FILE} argument exists as a file and if not then it just prints as a message.
 
-TODO:
+TODO
+-----
 - Line by line file reading
 - Conversations (to emulate FTP, SMTP, etc.)
