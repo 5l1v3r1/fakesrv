@@ -5,17 +5,17 @@ import sys
 import socket
 import signal
 
-def handleUDP(cs, MSG):
+def handleUDP(cs, MSG, PORT):
     data, addr = cs.recvfrom(1024)
-    print("{0:s}:{1:d}: {2:s}".format(addr[0], addr[1], data.rstrip('\n')))
+    print("{0:s}:{1:d}->{3:d}: {2:s}".format(addr[0], addr[1], data.rstrip('\n'), PORT))
     if MSG:
         cs.sendto("{0:s}".format(MSG), addr)
 
-def handleTCP(cs, addr, MSG):
-    print("Connection from: {0:s}:{1:d}".format(addr[0], addr[1]))
+def handleTCP(cs, addr, MSG, PORT):
+    print("Connection from: {0:s}:{1:d}->{2:d}".format(addr[0], addr[1], PORT))
     try:
         data = cs.recv(1024)
-        print("{0:s}:{1:d}: {2:s}".format(addr[0], addr[1], data.rstrip('\n')))
+        print("{0:s}:{1:d}->{3:d}: {2:s}".format(addr[0], addr[1], data.rstrip('\n'), PORT))
         if MSG:
             cs.sendall("{0:s}".format(MSG))
         cs.close()
@@ -51,7 +51,7 @@ def main():
             pid = os.fork()
             if pid == 0:
                 s.close()
-                handleTCP(cs, addr, MSG)
+                handleTCP(cs, addr, MSG, PORT)
                 sys.exit(0)
             cs.close()
 
@@ -59,7 +59,7 @@ def main():
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.bind(('0.0.0.0', PORT))
         while 1:
-            handleUDP(s, MSG)
+            handleUDP(s, MSG, PORT)
 
     else:
         print('PROTO is either TCP or UDP')
