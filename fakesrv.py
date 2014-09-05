@@ -7,15 +7,15 @@ import signal
 
 def handleUDP(cs, MSG, PORT):
     data, addr = cs.recvfrom(1024)
-    print("{0:s}:{1:d}->{3:d}: {2:s}".format(addr[0], addr[1], data.rstrip('\n'), PORT))
+    print("{0:s}:{1:d}->UDP{3:d}: {2:s}".format(addr[0], addr[1], data.rstrip('\n'), PORT))
     if MSG:
         cs.sendto("{0:s}".format(MSG), addr)
 
 def handleTCP(cs, addr, MSG, PORT):
-    print("Connection from: {0:s}:{1:d}->{2:d}".format(addr[0], addr[1], PORT))
+    print("Connection from: {0:s}:{1:d}->TCP{2:d}".format(addr[0], addr[1], PORT))
     try:
         data = cs.recv(1024)
-        print("{0:s}:{1:d}->{3:d}: {2:s}".format(addr[0], addr[1], data.rstrip('\n'), PORT))
+        print("{0:s}:{1:d}->TCP{3:d}: {2:s}".format(addr[0], addr[1], data.rstrip('\n'), PORT))
         if MSG:
             cs.sendall("{0:s}".format(MSG))
         cs.close()
