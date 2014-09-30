@@ -2,7 +2,18 @@ fakesrv.py
 ==========
 Fake services with ease.
 
-Usage ./fakesrv.py {PROTOCOL} {PORT} {FILE OR MESSAGE}
+<pre>
+usage: fakesrv.py [-h] [-t] [-u] -p PORT [-m MSG] [-f FILE]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t, --tcp             listen on TCP
+  -u, --udp             listen on UDP
+  -p PORT, --port PORT  port number to listen on
+  -m MSG, --message MSG
+                        message to output on connection
+  -f FILE, --file FILE  file to read a message from, read out on conneciton
+</pre>
 
 EX...
 <pre>
