@@ -30,6 +30,7 @@ have fun inside
 </pre>
 
 It's really easy. You can use a file instead of a message with the -f option<br>
+The server waits for input before it responds to anything. Feel free to modify it to just spit out stuff right away.<br>
 The default protocol is TCP and the default message is "Hello World!"<br>
 The only required argument is the port to listen on.<br>
 
