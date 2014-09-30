@@ -4,6 +4,7 @@ import os
 import sys
 import socket
 import signal
+import argparse
 
 def handleUDP(cs, MSG, PORT):
     data, addr = cs.recvfrom(1024)
@@ -24,28 +25,43 @@ def handleTCP(cs, addr, MSG, PORT):
         cs.close()
 
 def main():
-    if len(sys.argv) != 4:
-        print("Usage: {0:s} PROTO PORT FILE/MSG".format(sys.argv[0]))
-        sys.exit(1)
 
-    PROTO = sys.argv[1]
-    PORT = int(sys.argv[2])
-    FILE = sys.argv[3]
-    MSG = ""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-t', '--tcp', action='store_true', dest='istcp', help="listen on TCP", default=False)
+    parser.add_argument('-u', '--udp', action='store_true', dest='isudp', help="listen on UDP", default=False)
+    parser.add_argument('-p', '--port', action='store', dest='PORT', type=int, help='port number to listen on', required=True)
+    parser.add_argument('-m', '--message', action='store', dest='MSG', help="message to output on connection", default="")
+    parser.add_argument('-f', '--file', action='store', dest='FILE', default="", help="file to read a message from, read out on conneciton")
+    args = parser.parse_args()
 
-    try:
-        with open(FILE, "r") as f:
-            MSG = f.read()
-    except:
-        print("File \"{0:s}\" does not exist. Using input as message to send.".format(FILE))
-        MSG = FILE
+    FILE = args.FILE
+    MSG = args.MSG
+    istcp = args.istcp
+    isudp = args.isudp
+    PORT = args.PORT
+
+    if FILE:
+        try:
+            with open(FILE, "r") as f:
+                MSG = f.read()
+        except:
+            print("File \"{0:s}\" does not exist. Exiting...")
+            return 1
+
+    if not istcp and not isudp:
+        print("Neither UDP not TCP specified, exiting...")
+        return 1
+    if istcp and isudp:
+        print("Both TCP and UDP specified, exiting...")
+        return 1
 
     signal.signal(signal.SIGCHLD, signal.SIG_IGN)
 
-    if PROTO.upper() == 'TCP':
+    if istcp:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind(('0.0.0.0', PORT))
         s.listen(100)
+        print("Listening on {} TCP".format(PORT))
         while 1:
             (cs, addr) = s.accept()
             pid = os.fork()
@@ -55,15 +71,12 @@ def main():
                 sys.exit(0)
             cs.close()
 
-    elif PROTO.upper() == 'UDP':
+    elif isudp:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.bind(('0.0.0.0', PORT))
+        print("Listening on {} UDP".format(PORT))
         while 1:
             handleUDP(s, MSG, PORT)
-
-    else:
-        print('PROTO is either TCP or UDP')
-        sys.exit(1)
     return 0
 
 if __name__ == '__main__':
