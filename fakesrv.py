@@ -27,10 +27,10 @@ def handleTCP(cs, addr, MSG, PORT):
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--tcp', action='store_true', dest='istcp', help="listen on TCP", default=False)
+    parser.add_argument('-t', '--tcp', action='store_true', dest='istcp', help="listen on TCP", default=True)
     parser.add_argument('-u', '--udp', action='store_true', dest='isudp', help="listen on UDP", default=False)
     parser.add_argument('-p', '--port', action='store', dest='PORT', type=int, help='port number to listen on', required=True)
-    parser.add_argument('-m', '--message', action='store', dest='MSG', help="message to output on connection", default="")
+    parser.add_argument('-m', '--message', action='store', dest='MSG', help="message to output on connection", default="Hello World!")
     parser.add_argument('-f', '--file', action='store', dest='FILE', default="", help="file to read a message from, read out on conneciton")
     args = parser.parse_args()
 
@@ -48,9 +48,6 @@ def main():
             print("File \"{0:s}\" does not exist. Exiting...")
             return 1
 
-    if not istcp and not isudp:
-        print("Neither UDP not TCP specified, exiting...")
-        return 1
     if istcp and isudp:
         print("Both TCP and UDP specified, exiting...")
         return 1
