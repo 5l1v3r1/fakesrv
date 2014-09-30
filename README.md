@@ -30,6 +30,8 @@ have fun inside
 </pre>
 
 It's really easy. You can use a file instead of a message with the -f option<br>
+The default protocol is TCP and the default message is "Hello World!"<br>
+The only required argument is the port to listen on.<br>
 
 TODO
 -----
